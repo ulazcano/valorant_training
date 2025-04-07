@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Cuadrantes en Tiempo Real</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: Arial, sans-serif;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            height: 100vh;
+        }
+        .quadrant {
+            border: 1px solid #ccc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2vw;
+            text-align: center;
+            padding: 10px;
+        }
+        @media (max-width: 600px) {
+            .quadrant {
+                font-size: 5vw;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="grid">
+        <div id="q0" class="quadrant"></div>
+        <div id="q1" class="quadrant"></div>
+        <div id="q2" class="quadrant"></div>
+        <div id="q3" class="quadrant"></div>
+    </div>
+
+    <script>
+        const ws = new WebSocket(`ws://${window.location.host}/ws`);
+
+        ws.onmessage = function(event) {
+            const data = JSON.parse(event.data);
+            const quadrant = data.quadrant;
+            const message = data.message;
+            const elem = document.getElementById(`q${quadrant}`);
+            if (elem) {
+                elem.textContent = message;
+            }
+        };
+    </script>
+</body>
+</html>
