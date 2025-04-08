@@ -42,16 +42,22 @@
 
     <script>
         const ws = new WebSocket(`wss://${window.location.host}/ws`);
-
+    
         ws.onmessage = function(event) {
             const data = JSON.parse(event.data);
             const quadrant = data.quadrant;
             const message = data.message;
+            const color = data.color;
+    
             const elem = document.getElementById(`q${quadrant}`);
             if (elem) {
                 elem.textContent = message;
+                elem.style.backgroundColor = color;
             }
         };
     </script>
+
+
+
 </body>
 </html>
